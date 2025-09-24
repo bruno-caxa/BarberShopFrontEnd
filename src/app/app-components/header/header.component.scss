@@ -1,0 +1,22 @@
+mat-toolbar {
+  height: 8rem;
+}
+
+.mat-toolbar.mat-primary {
+  background-color: #000000;
+}
+
+.container-toolbar {
+  display: flex;
+  align-items: center;
+  height: -webkit-fill-available;
+  width: 100%;
+}
+
+.img-logo {
+  max-height: -webkit-fill-available;
+}
+
+.box-menu {
+  margin-inline-start: auto;
+}

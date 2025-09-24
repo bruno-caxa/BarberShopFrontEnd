@@ -1,0 +1,56 @@
+.footer {
+  background-color: #000000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.box-icons {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #babec6;
+  width: 80%;
+}
+
+.box-icons ul {
+  display: flex;
+  padding: 2rem 0 2rem 0;
+  justify-content: center;
+  list-style: none;
+}
+
+.box-icons li {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.box-icons li span {
+  cursor: pointer;
+}
+
+.box-icons li button {
+  display: flex;
+}
+
+.box-credits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.credits-logo {
+  margin-bottom: 3rem;
+}
+
+.credits-description {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #babec6;
+}
