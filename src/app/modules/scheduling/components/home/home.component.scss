@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box-title {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
