@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import {
-  CalendarEvent,
-  CalendarModule,
-  CalendarView
-} from 'angular-calendar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CalendarModule],
+  imports: [CalendarModule, MatDialogModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -21,4 +18,12 @@ export class HomeComponent {
       title: 'An Event',
     },
   ];
+
+  onDayClicked(event: any): void {
+    this.openCalendarDayClicked(event.day.date.getDate());
+  }
+
+  openCalendarDayClicked(number: number): void {
+
+  }
 }
