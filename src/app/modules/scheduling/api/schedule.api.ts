@@ -12,6 +12,6 @@ export class ScheduleApi {
   constructor(private http: HttpClient) {}
 
   get(): Observable<string> {
-    return this.http.get<string>(environment.API + this.API);
+    return this.http.get(environment.API + this.API, { responseType: 'text' });
   }
 }
