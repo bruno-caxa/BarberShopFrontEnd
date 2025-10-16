@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ScheduleApi } from '../api/schedule.api';
+import { ScheduleModel } from '../model/schedule.model';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,7 @@ import { ScheduleApi } from '../api/schedule.api';
 export class ScheduleFacade {
   constructor(private api: ScheduleApi) {}
 
-  get(): Observable<string> {
-    return this.api.get();
+  getSchedulesByDate(date: string): Observable<ScheduleModel[]> {
+    return this.api.getSchedulesByDate(date);
   }
 }

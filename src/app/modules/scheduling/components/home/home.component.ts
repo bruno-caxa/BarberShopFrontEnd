@@ -1,14 +1,15 @@
-import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
+import { Observable } from 'rxjs';
 import { ScheduleFacade } from '../../facade/schedule.facade';
-import { take } from 'rxjs';
+import { ScheduleModel } from '../../model/schedule.model';
+import { DayDialogComponent } from './dialog/day-dialog.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AsyncPipe, CalendarModule, MatDialogModule],
+  imports: [CalendarModule, MatDialogModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -22,17 +23,39 @@ export class HomeComponent {
     },
   ];
 
-  data$ = this.get();
+  readonly dialog = inject(MatDialog);
+
+  currentDate: string = '';
 
   constructor(private facade: ScheduleFacade) {}
 
-  get() {
-    return this.facade.get();
-  }
-
   onDayClicked(event: any): void {
-    this.openCalendarDayClicked(event.day.date.getDate());
+    const isoLocalDate = this.toLocalIsoDate(event.day.date);
+    this.currentDate = isoLocalDate;
+    this.openDayDialog();
   }
 
-  openCalendarDayClicked(number: number): void {}
+  openDayDialog(): void {
+    const refDialog = this.dialog.open(DayDialogComponent, {
+      data: {
+        date: this.currentDate,
+        schedules$: this.getSchedulesByDate(this.currentDate),
+      },
+      width: '400px',
+    });
+
+    refDialog.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed', result);
+    });
+  }
+
+  getSchedulesByDate(date: string): Observable<ScheduleModel[]> {
+    return this.facade.getSchedulesByDate(date);
+  }
+
+  private toLocalIsoDate(date: Date): string {
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${date.getFullYear()}-${m}-${d}`;
+  }
 }
