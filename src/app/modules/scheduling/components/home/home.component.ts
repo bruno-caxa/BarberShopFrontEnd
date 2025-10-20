@@ -2,9 +2,13 @@ import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 import { Observable } from 'rxjs';
+import {
+  toDisplayDate,
+  toIsoLocalDate,
+} from '../../../../shared/utils/date-utils';
 import { ScheduleFacade } from '../../facade/schedule.facade';
 import { ScheduleModel } from '../../model/schedule.model';
-import { DayDialogComponent } from './dialog/day-dialog.component';
+import { DayDialogComponent } from '../day-dialog/day-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -26,12 +30,13 @@ export class HomeComponent {
   readonly dialog = inject(MatDialog);
 
   currentDate: string = '';
+  isoLocalDate: string = '';
 
   constructor(private facade: ScheduleFacade) {}
 
   onDayClicked(event: any): void {
-    const isoLocalDate = this.toLocalIsoDate(event.day.date);
-    this.currentDate = isoLocalDate;
+    this.currentDate = toDisplayDate(event.day.date, '/');
+    this.isoLocalDate = toIsoLocalDate(event.day.date);
     this.openDayDialog();
   }
 
@@ -39,7 +44,7 @@ export class HomeComponent {
     const refDialog = this.dialog.open(DayDialogComponent, {
       data: {
         date: this.currentDate,
-        schedules$: this.getSchedulesByDate(this.currentDate),
+        schedules$: this.getSchedulesByDate(this.isoLocalDate),
       },
       width: '400px',
     });
@@ -51,11 +56,5 @@ export class HomeComponent {
 
   getSchedulesByDate(date: string): Observable<ScheduleModel[]> {
     return this.facade.getSchedulesByDate(date);
-  }
-
-  private toLocalIsoDate(date: Date): string {
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
-    return `${date.getFullYear()}-${m}-${d}`;
   }
 }

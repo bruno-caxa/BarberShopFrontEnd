@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="box-title">
+    <span>Agendamentos</span>
+    <span style="margin-inline-start: auto">{{ data?.date }}</span>
+  </div>
+
+  <div class="box-schedule" *ngFor="let slot of slots$ | async">
+    <span class="hour"> {{ slot.hour }}:00</span>
+    <span>-</span>
+    <span class="customer"> {{ slot.customerName }} </span>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Fechar</button>
+  </mat-dialog-actions>
+</div>
