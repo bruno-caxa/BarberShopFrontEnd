@@ -4,11 +4,33 @@
     <span style="margin-inline-start: auto">{{ data?.date }}</span>
   </div>
 
-  <div class="box-schedule" *ngFor="let slot of slots$ | async">
-    <span class="hour"> {{ slot.hour }}:00</span>
-    <span>-</span>
-    <span class="customer"> {{ slot.customerName }} </span>
+  <div class="box-sub-title">
+    <span>Selecione um horário disponível</span>
   </div>
+
+  <div class="box-content" *ngIf="slots$ | async as slots; else loading">
+    <div
+      class="box-schedule"
+      *ngFor="let slot of slots"
+      [class.available-slot]="slot.customerName === ''"
+    >
+      <span class="hour">{{ slot.hour | number : "2.0-0" }}:00</span>
+      <span class="customer">
+        {{ slot.customerName }}
+      </span>
+      <span class="scheduleAppointment" (click)="onClickSchedule()">Marcar horário</span>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading">
+      <mat-progress-spinner
+        diameter="36"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+      <span style="margin-left: 8px">Carregando...</span>
+    </div>
+  </ng-template>
 
   <mat-dialog-actions align="end">
     <button mat-button (click)="close()">Fechar</button>

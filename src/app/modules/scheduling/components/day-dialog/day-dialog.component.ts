@@ -6,13 +6,19 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { catchError, map, Observable, of, shareReplay } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { catchError, map, Observable, of, shareReplay, startWith } from 'rxjs';
 import { ScheduleModel } from '../../model/schedule.model';
 
 @Component({
   selector: 'app-day-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './day-dialog.component.html',
   styleUrl: './day-dialog.component.scss',
 })
@@ -24,7 +30,7 @@ export class DayDialogComponent {
     (_, i) => this.startHour + i
   );
 
-  slots$!: Observable<{ hour: number; customerName: string }[]>;
+  slots$!: Observable<{ hour: number; customerName: string }[] | null>;
 
   constructor(
     private dialogRef: MatDialogRef<DayDialogComponent>,
@@ -36,7 +42,7 @@ export class DayDialogComponent {
   ) {
     const emptySlots = of(
       this.hours.map((h) => ({ hour: h, customerName: '' }))
-    );
+    ).pipe(startWith(null));
 
     if (!this.data?.schedules$) {
       this.slots$ = emptySlots;
@@ -44,22 +50,23 @@ export class DayDialogComponent {
       this.slots$ = this.data.schedules$.pipe(
         catchError(() => of<ScheduleModel[]>([])),
         map((schedules) => {
-          const byHour = new Map<number, string>();
-
-          for (const s of schedules) {
-            if (!s) continue;
-            const date = s.haircutDate ? new Date(s.haircutDate) : null;
-            if (!date || isNaN(date.getTime())) continue;
-            const hour = date.getHours();
+          const byHour = schedules.reduce((acc, s) => {
+            if (!s) return acc;
+            const time = s.haircutDate ? new Date(s.haircutDate) : null;
+            if (!time || isNaN(time.getTime())) return acc;
+            const hour = time.getHours();
             const name =
               (s as any)?.customer?.name ?? (s as any)?.customerName ?? '';
-            if (name) byHour.set(hour, name);
-          }
+            if (name) acc.set(hour, name);
+            return acc;
+          }, new Map<number, string>());
+
           return this.hours.map((h) => ({
             hour: h,
             customerName: byHour.get(h) ?? '',
           }));
         }),
+        startWith(null),
         shareReplay({ bufferSize: 1, refCount: true })
       );
     }
@@ -67,5 +74,9 @@ export class DayDialogComponent {
 
   close() {
     this.dialogRef.close();
+  }
+
+  onClickSchedule() {
+    console.log('Schedule clicked');
   }
 }
