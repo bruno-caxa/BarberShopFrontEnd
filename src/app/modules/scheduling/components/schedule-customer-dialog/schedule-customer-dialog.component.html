@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="box-title">
+    <span>{{ data?.hour | number : "2.0-0" }}:00</span>
+    <span style="margin-inline-start: auto">{{ data?.date }}</span>
+  </div>
+
+  <div class="box-customer">
+    <div class="customer-name">
+      <span>Qual o seu nome?</span>
+      <input matInput type="text" />
+    </div>
+
+    <div class="customer-phone">
+      <span>Qual o seu telefone?</span>
+      <input matInput type="text" />
+    </div>
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Fechar</button>
+  </mat-dialog-actions>
+</div>

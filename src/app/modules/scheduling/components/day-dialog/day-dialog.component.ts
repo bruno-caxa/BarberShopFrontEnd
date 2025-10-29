@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, map, Observable, of, shareReplay, startWith } from 'rxjs';
 import { ScheduleModel } from '../../model/schedule.model';
+import { ScheduleCustomerDialogComponent } from '../schedule-customer-dialog/schedule-customer-dialog.component';
 
 @Component({
   selector: 'app-day-dialog',
@@ -31,6 +33,8 @@ export class DayDialogComponent {
   );
 
   slots$!: Observable<{ hour: number; customerName: string }[] | null>;
+
+  readonly dialog = inject(MatDialog);
 
   constructor(
     private dialogRef: MatDialogRef<DayDialogComponent>,
@@ -76,7 +80,13 @@ export class DayDialogComponent {
     this.dialogRef.close();
   }
 
-  onClickSchedule() {
-    console.log('Schedule clicked');
+  onClickScheduleCustomer(date: string, hour: number) {
+    const refDialog = this.dialog.open(ScheduleCustomerDialogComponent, {
+      data: {
+        date: date,
+        hour: hour,
+      },
+      width: '400px',
+    });
   }
 }

@@ -18,7 +18,11 @@
       <span class="customer">
         {{ slot.customerName }}
       </span>
-      <span class="scheduleAppointment" (click)="onClickSchedule()">Marcar horário</span>
+      <span
+        class="scheduleAppointment"
+        (click)="onClickScheduleCustomer(data!.date, slot.hour)"
+        >Marcar horário</span
+      >
     </div>
   </div>
 
