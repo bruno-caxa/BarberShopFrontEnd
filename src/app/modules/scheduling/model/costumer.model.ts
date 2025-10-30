@@ -1,5 +1,9 @@
 export class CustomerModel {
-  id = 0;
+  id?: number;
   name = '';
   cellPhone = '';
+
+  constructor(init?: Partial<CustomerModel>) {
+    Object.assign(this, init);
+  }
 }

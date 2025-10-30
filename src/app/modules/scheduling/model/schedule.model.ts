@@ -1,7 +1,7 @@
 import { CustomerModel } from './costumer.model';
 
 export class ScheduleModel {
-  id = 0;
+  id?: number;
   haircutDate: Date = new Date();
   customer: CustomerModel = new CustomerModel();
 }

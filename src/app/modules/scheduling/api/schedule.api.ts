@@ -17,4 +17,8 @@ export class ScheduleApi {
       environment.API + this.API + '/' + date
     );
   }
+
+  scheduleCustomer(schedule: ScheduleModel): Observable<any> {
+    return this.http.post(environment.API + this.API, schedule);
+  }
 }

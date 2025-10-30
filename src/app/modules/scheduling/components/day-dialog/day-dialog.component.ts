@@ -40,7 +40,7 @@ export class DayDialogComponent {
     private dialogRef: MatDialogRef<DayDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      date: string;
+      date: Date;
       schedules$: Observable<ScheduleModel[]>;
     } | null
   ) {
@@ -80,7 +80,7 @@ export class DayDialogComponent {
     this.dialogRef.close();
   }
 
-  onClickScheduleCustomer(date: string, hour: number) {
+  onClickScheduleCustomer(date: Date, hour: number) {
     const refDialog = this.dialog.open(ScheduleCustomerDialogComponent, {
       data: {
         date: date,

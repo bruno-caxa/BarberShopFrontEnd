@@ -9,9 +9,8 @@ export function toIsoLocalDate(date: Date): string {
   return `${y}-${m}-${d}`; // yyyy-MM-dd
 }
 
-export function toDisplayDate(date: Date, separator = '-'): string {
-  const y = date.getFullYear();
-  const m = pad2(date.getMonth() + 1);
-  const d = pad2(date.getDate());
-  return `${d}${separator}${m}${separator}${y}`; // dd-MM-yyyy
-}
+// export function toDisplayDate(date: Date, separator = '-'): string {
+//   const y = date.getFullYear();
+//   const m = pad2(date.getMonth() + 1);
+//   const d = pad2(date.getDate());
+//   return `${d}${separator}${m}${separator}${y}`; // dd-MM-yyyy

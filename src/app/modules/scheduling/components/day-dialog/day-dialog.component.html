@@ -1,7 +1,9 @@
 <div class="container">
   <div class="box-title">
     <span>Agendamentos</span>
-    <span style="margin-inline-start: auto">{{ data?.date }}</span>
+    <span style="margin-inline-start: auto">
+      {{ data?.date | date : "dd/MM/yyyy" }}
+    </span>
   </div>
 
   <div class="box-sub-title">

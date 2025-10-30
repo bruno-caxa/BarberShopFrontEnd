@@ -2,10 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 import { Observable } from 'rxjs';
-import {
-  toDisplayDate,
-  toIsoLocalDate,
-} from '../../../../shared/utils/date-utils';
+import { toIsoLocalDate } from '../../../../shared/utils/date-utils';
 import { ScheduleFacade } from '../../facade/schedule.facade';
 import { ScheduleModel } from '../../model/schedule.model';
 import { DayDialogComponent } from '../day-dialog/day-dialog.component';
@@ -29,13 +26,13 @@ export class HomeComponent {
 
   readonly dialog = inject(MatDialog);
 
-  currentDate: string = '';
+  currentDate: Date = new Date();
   isoLocalDate: string = '';
 
   constructor(private facade: ScheduleFacade) {}
 
   onDayClicked(event: any): void {
-    this.currentDate = toDisplayDate(event.day.date, '/');
+    this.currentDate = event.day.date;
     this.isoLocalDate = toIsoLocalDate(event.day.date);
     this.openDayDialog();
   }
