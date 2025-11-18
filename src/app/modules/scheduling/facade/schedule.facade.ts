@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ScheduleApi } from '../api/schedule.api';
 import { ScheduleModel } from '../model/schedule.model';
 
@@ -13,7 +13,7 @@ export class ScheduleFacade {
     return this.api.getSchedulesByDate(date);
   }
 
-  scheduleCustomer(schedule: ScheduleModel) {
-    this.api.scheduleCustomer(schedule).pipe(take(1)).subscribe();
+  scheduleCustomer(schedule: ScheduleModel): Observable<any> {
+    return this.api.scheduleCustomer(schedule);
   }
 }

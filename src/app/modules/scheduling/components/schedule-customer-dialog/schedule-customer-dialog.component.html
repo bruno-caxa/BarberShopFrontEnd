@@ -1,31 +1,89 @@
 <div class="container">
-  <div class="box-title">
-    <span>{{ data?.hour | number : "2.0-0" }}:00</span>
-    <span style="margin-inline-start: auto">
-      {{ data?.date | date : "dd/MM/yyyy" }}
-    </span>
+  <div class="card">
+    <div class="logo">
+      <img src="assets/crys-logo.jpg" alt="Logo" class="img-logo" />
+    </div>
+
+    <form
+      [formGroup]="customerForm"
+      class="box-customer"
+      (ngSubmit)="onSchedule()"
+    >
+      <span class="time">{{ data?.hour | number : "2.0-0" }}:00</span>
+      <h1>Confirme seu agendamento</h1>
+
+      <div class="form-group">
+        <label for="name">Como você se chama*</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          placeholder="Digite seu nome"
+          required
+        />
+        <div
+          class="error-message"
+          *ngIf="
+            customerForm.get('name')?.hasError('required') &&
+            (customerForm.get('name')?.touched ||
+              customerForm.get('name')?.dirty)
+          "
+        >
+          Por favor, insira o seu nome completo.
+        </div>
+        <div
+          class="error-message"
+          *ngIf="customerForm.get('name')?.hasError('minlength')"
+        >
+          Nome completo ou apelido para evitar confusões.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="cellPhone">Seu telefone*</label>
+        <input
+          type="tel"
+          id="cellPhone"
+          formControlName="cellPhone"
+          mask="00000-0000"
+          placeholder="91234-5678"
+          required
+        />
+        <div
+          class="error-message"
+          *ngIf="
+            customerForm.get('cellPhone')?.hasError('minlength') ||
+            (customerForm.get('cellPhone')?.hasError('required') &&
+              (customerForm.get('cellPhone')?.touched ||
+                customerForm.get('cellPhone')?.dirty))
+          "
+        >
+          Por favor, insira o seu telefone para entrarmos em contato.
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button
+          class="confirm"
+          type="submit"
+          [disabled]="customerForm.invalid || isLoading"
+        >
+          <mat-progress-spinner
+            *ngIf="isLoading"
+            diameter="20"
+            mode="indeterminate"
+          ></mat-progress-spinner>
+          <span *ngIf="!isLoading">Confirmar</span>
+        </button>
+        <button
+          class="cancel"
+          type="button"
+          (click)="onClose()"
+          [disabled]="isLoading"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
   </div>
-
-  <form
-    [formGroup]="customerForm"
-    class="box-customer"
-    (ngSubmit)="onSchedule()"
-  >
-    <div class="customer-name">
-      <span>Qual o seu nome?</span>
-      <input matInput type="text" formControlName="name" />
-    </div>
-
-    <div class="customer-phone">
-      <span>Qual o seu telefone?</span>
-      <input matInput type="text" formControlName="cellPhone" />
-    </div>
-    <button mat-raised-button type="submit" [disabled]="customerForm.invalid">
-      Agendar
-    </button>
-  </form>
-
-  <mat-dialog-actions align="end">
-    <button mat-button (click)="onClose()">Fechar</button>
-  </mat-dialog-actions>
 </div>

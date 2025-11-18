@@ -44,6 +44,33 @@ export class DayDialogComponent {
       schedules$: Observable<ScheduleModel[]>;
     } | null
   ) {
+    this.loadSchedules();
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+
+  onClickScheduleCustomer(date: Date, hour: number) {
+    const refDialog = this.dialog.open(ScheduleCustomerDialogComponent, {
+      data: {
+        date: date,
+        hour: hour,
+      },
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+    });
+
+    refDialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadSchedules();
+      }
+    });
+  }
+
+  private loadSchedules(): void {
     const emptySlots = of(
       this.hours.map((h) => ({ hour: h, customerName: '' }))
     ).pipe(startWith(null));
@@ -74,19 +101,5 @@ export class DayDialogComponent {
         shareReplay({ bufferSize: 1, refCount: true })
       );
     }
-  }
-
-  close() {
-    this.dialogRef.close();
-  }
-
-  onClickScheduleCustomer(date: Date, hour: number) {
-    const refDialog = this.dialog.open(ScheduleCustomerDialogComponent, {
-      data: {
-        date: date,
-        hour: hour,
-      },
-      width: '400px',
-    });
   }
 }
