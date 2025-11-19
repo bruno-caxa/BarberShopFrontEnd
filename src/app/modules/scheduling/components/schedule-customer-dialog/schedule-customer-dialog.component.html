@@ -1,6 +1,6 @@
-<div class="container">
-  <div class="card">
-    <div class="logo">
+<div class="container-fullscreen">
+  <div class="card-fullscreen">
+    <div class="logo-fullscreen">
       <img src="assets/crys-logo.jpg" alt="Logo" class="img-logo" />
     </div>
 
@@ -62,9 +62,9 @@
         </div>
       </div>
 
-      <div class="buttons">
+      <div class="box-buttons">
         <button
-          class="confirm"
+          class="btn-primary"
           type="submit"
           [disabled]="customerForm.invalid || isLoading"
         >
@@ -76,7 +76,7 @@
           <span *ngIf="!isLoading">Confirmar</span>
         </button>
         <button
-          class="cancel"
+          class="btn-cancel"
           type="button"
           (click)="onClose()"
           [disabled]="isLoading"

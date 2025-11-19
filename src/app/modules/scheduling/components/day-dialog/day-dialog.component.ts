@@ -47,7 +47,7 @@ export class DayDialogComponent {
     this.loadSchedules();
   }
 
-  close() {
+  onClose() {
     this.dialogRef.close();
   }
 

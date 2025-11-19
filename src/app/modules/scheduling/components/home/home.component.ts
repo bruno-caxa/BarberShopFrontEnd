@@ -43,7 +43,10 @@ export class HomeComponent {
         date: this.currentDate,
         schedules$: this.getSchedulesByDate(this.isoLocalDate),
       },
-      width: '400px',
+      width: '100vw',
+      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
     });
 
     refDialog.afterClosed().subscribe((result) => {
