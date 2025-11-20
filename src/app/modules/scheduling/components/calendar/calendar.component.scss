@@ -50,3 +50,19 @@ mwl-calendar-month-view {
 :host ::ng-deep .cal-day-badge {
   display: none;
 }
+
+
+:host ::ng-deep .cal-day-cell.cal-past {
+  pointer-events: none;
+  opacity: 0.45;
+  filter: grayscale(0.1);
+  cursor: default;
+}
+
+//disable sunday and monday columns
+:host ::ng-deep .cal-header :nth-child(1),
+:host ::ng-deep .cal-header :nth-child(2),
+:host ::ng-deep .cal-days .cal-cell-row .cal-day-cell:nth-child(1),
+:host ::ng-deep .cal-days .cal-cell-row .cal-day-cell:nth-child(2) {
+  display: none;
+}

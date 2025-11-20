@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
+import {
+  CalendarEvent,
+  CalendarModule,
+  CalendarView
+} from 'angular-calendar';
 import { Observable } from 'rxjs';
 import { toIsoLocalDate } from '../../../../shared/utils/date-utils';
 import { ScheduleFacade } from '../../facade/schedule.facade';
@@ -37,7 +41,7 @@ export class CalendarComponent {
     this.openDayDialog();
   }
 
-  openDayDialog(): void {
+  private openDayDialog(): void {
     const refDialog = this.dialog.open(DayDialogComponent, {
       data: {
         date: this.currentDate,
@@ -54,7 +58,7 @@ export class CalendarComponent {
     });
   }
 
-  getSchedulesByDate(date: string): Observable<ScheduleModel[]> {
+  private getSchedulesByDate(date: string): Observable<ScheduleModel[]> {
     return this.facade.getSchedulesByDate(date);
   }
 }
