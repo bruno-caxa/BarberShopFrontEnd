@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { firstValueFrom } from 'rxjs';
+import { CustomerFacade } from '../../facade/customer.facade';
 import { ScheduleFacade } from '../../facade/schedule.facade';
 import { CustomerModel } from '../../model/costumer.model';
 import { ScheduleModel } from '../../model/schedule.model';
@@ -46,7 +47,8 @@ export class ScheduleCustomerDialogComponent {
   isLoading = false;
 
   constructor(
-    private facade: ScheduleFacade,
+    private customerFacade: CustomerFacade,
+    private scheduleFacade: ScheduleFacade,
     private dialogRef: MatDialogRef<ScheduleCustomerDialogComponent>,
     private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar,
@@ -62,17 +64,41 @@ export class ScheduleCustomerDialogComponent {
     this.cd.markForCheck();
 
     try {
-      await firstValueFrom(this.facade.scheduleCustomer(this.getSchedule()));
-      this.snackBar.open('Agendamento realizado com sucesso', 'Fechar', {
-        duration: 3000,
-      });
-      this.dialogRef.close(true);
+      const customer = await firstValueFrom(
+        this.customerFacade.findByCellPhone(this.getCustomerForm().cellPhone)
+      );
+
+      if (customer == null) {
+        await firstValueFrom(
+          this.scheduleFacade.scheduleCustomer(this.getSchedule())
+        );
+        this.snackBar.open('Agendamento realizado com sucesso!', 'Fechar', {
+          duration: 4000,
+        });
+        this.dialogRef.close(true);
+      } else {
+        this.snackBar.open(
+          'Telefone já cadastrado no nome de: ' +
+            customer.name +
+            '\n' +
+            'Deseja alterar para: ' +
+            this.getCustomerForm().name +
+            '?',
+          'Fechar',
+          {
+            duration: 4000,
+          }
+        );
+      }
     } catch (error) {
       console.error(error);
-      this.snackBar.open('Erro ao agendar. Tente novamente.', 'Fechar', {
-        duration: 4000,
-      });
-      this.dialogRef.close(false);
+      this.snackBar.open(
+        'Erro ao agendar. Tente novamente. - ' + error,
+        'Fechar',
+        {
+          duration: 4000,
+        }
+      );
     } finally {
       this.isLoading = false;
       this.cd.markForCheck();
@@ -83,17 +109,20 @@ export class ScheduleCustomerDialogComponent {
     this.dialogRef.close();
   }
 
-  private getSchedule(): ScheduleModel {
+  private getCustomerForm(): CustomerModel {
     const payload = this.customerForm.value as Partial<CustomerModel>;
     const customer = new CustomerModel(payload);
+    return customer;
+  }
 
+  private getSchedule(): ScheduleModel {
     const localDateTime = this.formatLocalDateTime(
       this.data!.date,
       this.data!.hour
     );
 
     const schedule = new ScheduleModel();
-    schedule.customer = customer;
+    schedule.customer = this.getCustomerForm();
     schedule.haircutDate = localDateTime as any;
     return schedule;
   }
