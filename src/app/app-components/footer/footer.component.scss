@@ -9,14 +9,13 @@
 }
 
 .box-icons {
-  margin-bottom: 3rem;
   border-bottom: 1px solid #babec6;
   width: 80%;
 }
 
 .box-icons ul {
   display: flex;
-  padding: 1rem 0 1rem 0;
+  padding: 0.25rem 0;
   justify-content: center;
   list-style: none;
 }
@@ -37,12 +36,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   padding: 0 0.5rem 0 0.5rem;
-}
-
-.credits-logo {
-  margin-bottom: 3rem;
 }
 
 .credits-description {
