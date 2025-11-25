@@ -1,10 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import {
-  CalendarEvent,
-  CalendarModule,
-  CalendarView
-} from 'angular-calendar';
+import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 import { Observable } from 'rxjs';
 import { toIsoLocalDate } from '../../../../shared/utils/date-utils';
 import { ScheduleFacade } from '../../facade/schedule.facade';
@@ -14,7 +11,7 @@ import { DayDialogComponent } from '../day-dialog/day-dialog.component';
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CalendarModule, MatDialogModule],
+  imports: [CommonModule, CalendarModule, MatDialogModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
 })
@@ -39,6 +36,24 @@ export class CalendarComponent {
     this.currentDate = event.day.date;
     this.isoLocalDate = toIsoLocalDate(event.day.date);
     this.openDayDialog();
+  }
+
+  prevMonth(): void {
+    this.changeMonth(-1);
+  }
+
+  nextMonth(): void {
+    this.changeMonth(1);
+  }
+
+  goToday(): void {
+    this.viewDate = new Date();
+  }
+
+  private changeMonth(month: number): void {
+    const d = new Date(this.viewDate.getTime());
+    d.setMonth(d.getMonth() + month);
+    this.viewDate = new Date(d.getFullYear(), d.getMonth(), 1);
   }
 
   private openDayDialog(): void {
