@@ -1,14 +1,36 @@
-<div class="calendar-header">
-  <button (click)="prevMonth()">Anterior</button>
-  <button (click)="goToday()">Hoje</button>
-  <button (click)="nextMonth()">Próximo</button>
-  <span class="current-month">{{ viewDate | date : "dd/MM/yyyy"}}</span>
-</div>
+<div class="container">
+  <div class="box-title">
+    <h1>Bem-vindo à nossa agenda online</h1>
+    <p>Facilite sua vida e decida o melhor horário para você.</p>
+  </div>
 
-<mwl-calendar-month-view
-  [viewDate]="viewDate"
-  [events]="events"
-  [locale]="'pt'"
-  (dayClicked)="onDayClicked($event)"
->
-</mwl-calendar-month-view>
+  <div class="box-calendar">
+    <div class="calendar-paginator">
+      <span class="current-month">{{ viewDate | date : "MMMM yyyy" }}</span>
+      <div class="box-buttons">
+        <button (click)="prevMonth()"><</button>
+        <div class="btn-grouped">
+          <button (click)="goToday()">Hoje</button>
+          <button (click)="nextMonth()">></button>
+        </div>
+      </div>
+    </div>
+
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [locale]="'pt'"
+      (dayClicked)="onDayClicked($event)"
+      [cellTemplate]="customDayCellTemplate"
+    >
+    </mwl-calendar-month-view>
+
+    <ng-template #customDayCellTemplate let-day="day">
+      <div class="custom-day-cell">
+        <span [ngClass]="isPastDay(day.date) ? 'day-past' : 'day'">
+          {{ day.date | date : "dd" }}
+        </span>
+      </div>
+    </ng-template>
+  </div>
+</div>

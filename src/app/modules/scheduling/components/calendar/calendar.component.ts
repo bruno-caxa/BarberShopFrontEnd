@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarModule } from 'angular-calendar';
 import { Observable } from 'rxjs';
 import { toIsoLocalDate } from '../../../../shared/utils/date-utils';
 import { ScheduleFacade } from '../../facade/schedule.facade';
@@ -16,7 +16,6 @@ import { DayDialogComponent } from '../day-dialog/day-dialog.component';
   styleUrl: './calendar.component.scss',
 })
 export class CalendarComponent {
-  readonly CalendarView = CalendarView;
   viewDate = new Date();
   events: CalendarEvent[] = [
     {
@@ -48,6 +47,15 @@ export class CalendarComponent {
 
   goToday(): void {
     this.viewDate = new Date();
+  }
+
+  isPastDay(date: Date): boolean {
+    const today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
+    return date.getTime() < today.getTime() ? true : false;
   }
 
   private changeMonth(month: number): void {
