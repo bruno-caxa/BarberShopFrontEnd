@@ -31,9 +31,9 @@ export class CalendarComponent {
 
   constructor(private facade: ScheduleFacade) {}
 
-  onDayClicked(event: any): void {
-    this.currentDate = event.day.date;
-    this.isoLocalDate = toIsoLocalDate(event.day.date);
+  onDayClicked(date: any): void {
+    this.currentDate = date;
+    this.isoLocalDate = toIsoLocalDate(date);
     this.openDayDialog();
   }
 

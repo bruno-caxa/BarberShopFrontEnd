@@ -20,14 +20,16 @@
       [viewDate]="viewDate"
       [events]="events"
       [locale]="'pt'"
-      (dayClicked)="onDayClicked($event)"
       [cellTemplate]="customDayCellTemplate"
     >
     </mwl-calendar-month-view>
 
     <ng-template #customDayCellTemplate let-day="day">
       <div class="custom-day-cell">
-        <span [ngClass]="isPastDay(day.date) ? 'day-past' : 'day'">
+        <span
+          [ngClass]="isPastDay(day.date) ? 'day-past' : 'day'"
+          (click)="onDayClicked(day.date)"
+        >
           {{ day.date | date : "dd" }}
         </span>
       </div>
