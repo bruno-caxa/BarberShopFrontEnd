@@ -1,6 +1,17 @@
+.container-fullscreen {
+  justify-content: start;
+  padding: 1rem 1rem;
+}
+
+.card-fullscreen {
+  gap: 1rem;
+  height: 90vh;
+  overflow: auto;
+}
+
 .box-title {
   display: flex;
-  padding: 1rem 0;
+  padding-top: 1rem;
   width: 100%;
 }
 
@@ -18,7 +29,6 @@
   color: #555555;
   font-size: 1rem;
   font-weight: 500;
-  padding-bottom: 0.5rem;
   width: 100%;
 }
 
