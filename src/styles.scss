@@ -91,3 +91,59 @@ body {
     width: 100%;
   }
 }
+
+// Snackbar styles
+.snackbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.snackbar-message {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.snackbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.snackbar-actions {
+  button {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+      line-height: 18px !important;
+    }
+  }
+  .btn-true {
+    background-color: #10b981 !important;
+    color: white !important;
+  }
+
+  .btn-true:hover {
+    background-color: #059669 !important;
+  }
+
+  .btn-false {
+    background-color: #ef4444 !important;
+    color: white !important;
+  }
+
+  .btn-false:hover {
+    background-color: #dc2626 !important;
+  }
+}

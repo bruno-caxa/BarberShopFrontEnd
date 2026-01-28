@@ -12,9 +12,10 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { firstValueFrom } from 'rxjs';
+import { SnackBarService } from '../../../../shared/service/snackbar/snackbar.service';
 import { CustomerFacade } from '../../facade/customer.facade';
 import { ScheduleFacade } from '../../facade/schedule.facade';
 import { CustomerModel } from '../../model/costumer.model';
@@ -51,7 +52,8 @@ export class ScheduleCustomerDialogComponent {
     private scheduleFacade: ScheduleFacade,
     private dialogRef: MatDialogRef<ScheduleCustomerDialogComponent>,
     private cd: ChangeDetectorRef,
-    private snackBar: MatSnackBar,
+    private snackBarService: SnackBarService,
+    // private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       date: Date;
@@ -72,32 +74,31 @@ export class ScheduleCustomerDialogComponent {
         await firstValueFrom(
           this.scheduleFacade.scheduleCustomer(this.getSchedule())
         );
-        this.snackBar.open('Agendamento realizado com sucesso!', 'Fechar', {
-          duration: 4000,
-        });
+        this.snackBarService.success('Agendamento realizado com sucesso!');
         this.dialogRef.close(true);
       } else {
-        this.snackBar.open(
-          'Telefone já cadastrado no nome de: ' +
-            customer.name +
-            '\n' +
-            'Deseja alterar para: ' +
-            this.getCustomerForm().name +
-            '?',
-          'Fechar',
-          {
-            duration: 4000,
-          }
-        );
+        this.snackBarService
+          .confirm(
+            'Telefone já cadastrado no nome de: ' +
+              customer.name +
+              '\nDeseja alterar para: ' +
+              this.getCustomerForm().name +
+              '?'
+          )
+          .then(async (confirmed) => {
+            if (confirmed) {
+              this.snackBarService.success(
+                'Agendamento realizado com sucesso!'
+              );
+            } else {
+              this.snackBarService.error('Agendamento cancelado pelo usuário.');
+            }
+          });
       }
     } catch (error) {
       console.error(error);
-      this.snackBar.open(
-        'Erro ao agendar. Tente novamente. - ' + error,
-        'Fechar',
-        {
-          duration: 4000,
-        }
+      this.snackBarService.error(
+        'Erro ao agendar. Tente novamente. - ' + error
       );
     } finally {
       this.isLoading = false;
